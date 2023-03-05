@@ -4,46 +4,62 @@ public class Main {
     //
     public static void main(String[] args) {
 //        System.out.println("Hello world!");
-        Scanner in =new Scanner((System.in));
+        Scanner in = new Scanner((System.in));
         System.out.println("Введите арифметическое выражение");
-        String word =in.nextLine();
+        String word = in.nextLine();
+        System.out.println("результат вычислений "+ calc(word));
+    }
+        public static String calc(String input){
         char []operandSymbols = new char [] {'+','-','*','/'};  //массив возможных операций
         String firstNum = null;
         String secondNum= null;
+        String strResult = null;
         int CountSymbols=0;
-        for (int i=0; i<word.length();i++)
+        double oneNum=0;          //первое число в дабл
+        double twoNum=0;          //второе число в дабл
+        double result = 0;          //объявляем переменную с результатами
+            char operandSym='+';                                //объявление символа операнда, вычисляемого ниже
+            char firstSym = input.charAt(0);                 //порверка араб/римск/невалид значение первого символа
+            char lastSym = input.charAt(input.length()-1);    //порверка араб/римск/невалид значение последнего символа
+            //boolean arabRoma= true;       //TRUE- арабские FALSH- римские
+        for (int i=0; i<input.length();i++)
         {
             for (int k=0; k<operandSymbols.length;k++)
             {
-                if (word.charAt(i)==operandSymbols[k])
+                if (input.charAt(i)==operandSymbols[k])
                     CountSymbols++;
             }
         }
         // System.out.println("CountSymbols  "+CountSymbols);
-        if (CountSymbols==0)            // проверка случая <1>
+        if (CountSymbols==0) {        // проверка случая <1>
             System.out.println("throws Exception  в вводе отсутствует арифметический оператор");
+            strResult= "throws Exception в вводе отсутствует арифметический оператор";
+        }
         else{
-            if (CountSymbols>1)         // // проверка случая <1+2+3>
+            if (CountSymbols>1) {        // // проверка случая <1+2+3>
                 System.out.println("throws Exception  в вводе больше одного арифметического оператора");
+                strResult= "throws Exception  в вводе больше одного арифметического оператора";
+            }
             else {
-        char firstSym = word.charAt(0);                 //порверка араб/римск/невалид значение первого символа
-        char lastSym = word.charAt(word.length()-1);    //порверка араб/римск/невалид значение последнего символа
+//        char firstSym = input.charAt(0);                 //порверка араб/римск/невалид значение первого символа
+//        char lastSym = input.charAt(input.length()-1);    //порверка араб/римск/невалид значение последнего символа
         if(Math.abs(ArabRomulSymbol(firstSym)+ArabRomulSymbol(lastSym))<2){    //проверка символов на соответсвие одной системе: если обе арабские то 1+1=2 если обе римские то -1+(-1)=-2
             System.out.println("throws Exception");
+            strResult= "throws Exception";
         }
         else {                                          //если исходные данные валидны то продолжаем алгоритм
-            char operandSym;                                //объявление символа операнда, вычисляемого ниже
+
             int operandIndex = 4;                             //Присвоение ИНвалидного номера индексу операторв , как флаг того что символ операнда не выбран(для выхода из цикла)
-            for (int i = 0; i < (word.length() - 1); i++)         //Цикл, перебирающий все символы входного слова в поиске символа операции
+            for (int i = 0; i < (input.length() - 1); i++)         //Цикл, перебирающий все символы входного слова в поиске символа операции
             {
                 for (int j = 0; j < operandSymbols.length; j++)//
                 {
-                    if (word.charAt(i) == operandSymbols[j]) //если символ найден, то
+                    if (input.charAt(i) == operandSymbols[j]) //если символ найден, то
                     {
                         operandSym = operandSymbols[j];
                         operandIndex = j;                 //символу операции присваивается индекс по которому потом выполняется действие
-                        firstNum = word.substring(0, i);       //первое число(пока String) от начала до символа операции
-                        secondNum = word.substring(i + 1);    //второе число(пока String) от  символа операции до конца
+                        firstNum = input.substring(0, i);       //первое число(пока String) от начала до символа операции
+                        secondNum = input.substring(i + 1);    //второе число(пока String) от  символа операции до конца
                         break;
                     }
                 }
@@ -53,9 +69,9 @@ public class Main {
             }
             //int result=ArabRomulSymbol(firstSym)+ArabRomulSymbol(lastSym);    // МУ -использовал для проверки кода
             //System.out.println("throws  NO Exception: "+result);              // МУ -использовал для проверки кода
-            double oneNum;          //первое число в дабл
-            double twoNum;          //второе число в дабл
-            double result = 0;          //объявляем переменную с результатами
+//            double oneNum;          //первое число в дабл
+//            double twoNum;          //второе число в дабл
+ //           double result = 0;          //объявляем переменную с результатами
             if (ArabRomulSymbol(firstSym) < 0)    //если числа римские то переводим их в арабские
             {
                 assert firstNum != null;
@@ -77,12 +93,14 @@ public class Main {
                     result = oneNum + twoNum;
                     break;
                 case 1:
-                    if (oneNum < twoNum && (ArabRomulSymbol(firstSym) + ArabRomulSymbol(lastSym)) < 0) {
-//                        System.out.println((ArabRomulSymbol(firstSym) + ArabRomulSymbol(lastSym)));
-                        System.out.println("throws Exception  -  в римских числах нет отрицательных чисел");
-                    } else {
-                        result = oneNum - twoNum;
-                    }
+//                    if (oneNum < twoNum && (ArabRomulSymbol(firstSym) + ArabRomulSymbol(lastSym)) < 0) {
+////                        System.out.println((ArabRomulSymbol(firstSym) + ArabRomulSymbol(lastSym)));
+//                        System.out.println(" в римских числах нет отрицательных чисел");
+//                        strResult = "throws Exception";
+//                    }
+//                    else {
+                    result = oneNum - twoNum;
+//                    }
                     break;
                 case 2:
                     result = oneNum * twoNum;
@@ -90,19 +108,34 @@ public class Main {
                 case 3:
                     result = oneNum / twoNum;
             }
-//            System.out.println("результат вычислений  " + result);    // МУ -использовал для проверки кода
-            if ((ArabRomulSymbol(firstSym) + ArabRomulSymbol(lastSym)) < 0)
+            if ((ArabRomulSymbol(firstSym) + ArabRomulSymbol(lastSym)) < 0) {
 //                System.out.println("результат римские " + ConvArabToRoma(result));
-                System.out.println(ConvArabToRoma(result));
-            else System.out.println(result);
+//                System.out.println(ConvArabToRoma(result));
+                strResult=ConvArabToRoma((int)result);
+                //arabRoma=true;
+            }
+            else {
+                //System.out.println(result);
+                strResult=""+(int)result;
+                //arabRoma=false;
+            }
         }
         }
-        }                          // конец алгоритма
+        }
+        if (oneNum<1|oneNum>10|twoNum<1|twoNum>10) {
+            strResult = "throws Exception";
+            System.out.println(" входные данные не в диапазоне {1-10}");
+        }
+                if ((oneNum - twoNum)<0 && operandSym == '-') {
+                       System.out.println(" в римских числах нет отрицательных чисел");
+                        strResult = "throws Exception";
+                   }
+            return strResult;
     }
     public static double RomToArab(String word)     /// метод переводящий римские цифры в арабские
     {
         int sumA=ConvRomNum(word.charAt(word.length()-1));  //присвоение первого справа  символа сумме(гарантировано наличие)
-        System.out.println("first number  "+sumA);
+//        System.out.println("first number  "+sumA);
         int a=0;                                            //текущая цифра римского числа
         int b=sumA;                                            //предидущая цифра римского числа
         for (int i = word.length()-2;i>=0;i--)
